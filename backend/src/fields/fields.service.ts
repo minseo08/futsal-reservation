@@ -25,11 +25,9 @@ export class FieldsService {
     startHour: number,
     endHour: number 
   ): Promise<Field> {
-    // 구장 정보 먼저 저장
     const newField = this.fieldsRepository.create({ name, address, pricePerHour });
     const savedField = await this.fieldsRepository.save(newField);
 
-    // 운영 시간에 맞춰 2시간 단위로 타임슬롯 생성 로직
     const slots: TimeSlot[] = [];
     for (let hour = startHour; hour < endHour; hour += 2) {
       const startTime = new Date();
@@ -46,7 +44,6 @@ export class FieldsService {
       slots.push(slot);
     }
 
-    // 생성된 모든 슬롯을 한꺼번에 DB에 저장
     await this.timeSlotRepository.save(slots);
 
     return savedField;

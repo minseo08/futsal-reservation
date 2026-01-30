@@ -128,7 +128,7 @@ return (
             style={{ padding: '8px' }}
           />
           <input 
-            type="text" placeholder="시간당 가격 (만 원)" required
+            type="text" placeholder="시간당 가격" required
             value={newField.pricePerHour} 
             onChange={e => {
               const value = e.target.value.replace(/[^0-9]/g, '');
