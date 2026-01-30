@@ -61,9 +61,21 @@ export default function AdminPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('정말로 이 구장을 삭제할까요?')) return;
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    alert('삭제되었습니다.');
-    fetchFields();
+
+    try {
+      const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+
+      if (res.ok) {
+        alert('삭제되었습니다.');
+        fetchFields();
+      } else {
+        const errorData = await res.json();
+        alert(`삭제 실패: ${errorData.message || '서버 에러가 발생했습니다.'}`);
+      }
+    } catch (error) {
+      console.error("삭제 요청 중 네트워크 오류:", error);
+      alert('서버와 통신할 수 없습니다.');
+    }
   };
 
   const handleUpdate = async (id: string, currentName: string) => {
