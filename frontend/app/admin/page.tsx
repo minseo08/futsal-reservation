@@ -16,12 +16,20 @@ export default function AdminPage() {
   const [newField, setNewField] = useState({
     name: '',
     address: '',
-    pricePerHour: 0,
+    pricePerHour: '',
     startHour: 9,
     endHour: 22
   });
 
   const API_URL = 'http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields';
+
+  const getAuthHeaders = (contentType = 'application/json') => {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-Type': contentType,
+      'Authorization': `Bearer ${token}`
+    };
+  };
 
   const fetchFields = async () => {
     try {
@@ -43,16 +51,20 @@ export default function AdminPage() {
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newField),
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          ...newField,
+          pricePerHour: Number(newField.pricePerHour)
+        }),
       });
 
       if (res.ok) {
         alert('구장이 성공적으로 등록되었습니다!');
-        setNewField({ name: '', address: '', pricePerHour: 0, startHour: 9, endHour: 22 });
+        setNewField({ name: '', address: '', pricePerHour: '', startHour: 9, endHour: 22 });
         fetchFields();
       } else {
-        alert('등록에 실패했습니다.');
+        const errorData = await res.json();
+        alert(`등록 실패: ${errorData.message || '권한이 없습니다.'}`);
       }
     } catch (error) {
       console.error("등록 중 오류 발생:", error);
@@ -63,7 +75,10 @@ export default function AdminPage() {
     if (!confirm('정말로 이 구장을 삭제할까요?')) return;
 
     try {
-      const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_URL}/${id}`, { 
+        method: 'DELETE',
+        headers: getAuthHeaders() // 삭제 요청에도 토큰 포함
+      });
 
       if (res.ok) {
         alert('삭제되었습니다.');
@@ -81,17 +96,21 @@ export default function AdminPage() {
   const handleUpdate = async (id: string, currentName: string) => {
     const newName = prompt('새로운 구장 이름을 입력하세요:', currentName);
     if (!newName) return;
-
-    await fetch(`${API_URL}/${id}`, {
+    const res = await fetch(`${API_URL}/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ name: newName }),
     });
-    alert('수정되었습니다.');
-    fetchFields();
+
+    if (res.ok) {
+      alert('수정되었습니다.');
+      fetchFields();
+    } else {
+      alert('수정에 실패했습니다. 권한을 확인하세요.');
+    }
   };
 
-  return (
+return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
       <h1>풋살장 관리자 모드</h1>
 
@@ -109,8 +128,12 @@ export default function AdminPage() {
             style={{ padding: '8px' }}
           />
           <input 
-            type="number" placeholder="시간당 가격 (만 원)" required
-            value={newField.pricePerHour} onChange={e => setNewField({...newField, pricePerHour: Number(e.target.value)})}
+            type="text" placeholder="시간당 가격 (만 원)" required
+            value={newField.pricePerHour} 
+            onChange={e => {
+              const value = e.target.value.replace(/[^0-9]/g, '');
+              setNewField({...newField, pricePerHour: value});
+            }}
             style={{ padding: '8px' }}
           />
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
