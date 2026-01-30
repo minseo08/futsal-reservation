@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { FieldsModule } from './fields/fields.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { FieldsModule } from './fields/fields.module';
       ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : false,
     }),
     FieldsModule,
+    UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

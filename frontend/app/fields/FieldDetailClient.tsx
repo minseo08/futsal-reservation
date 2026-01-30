@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function FieldDetailClient({ id }: { id: string }) {
   const [field, setField] = useState<any>(null);
   const [error, setError] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/${id}`)
@@ -24,13 +26,21 @@ export default function FieldDetailClient({ id }: { id: string }) {
   }, [id]);
 
   const handleBook = async (timeSlotId: string) => {
-    const userName = prompt('예약자 성함을 입력해주세요:');
-    if (!userName) return;
+    const token = localStorage.getItem('token'); // 주머니에서 티켓 꺼내기
+
+    if (!token) {
+      alert('로그인이 필요한 서비스입니다.');
+      router.push('/login');
+      return;
+    }
 
     const res = await fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reserve', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ timeSlotId, userName }),
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer ${token}`
+      },
+      body: JSON.stringify({ timeSlotId }),
     });
 
     if (res.ok) {
