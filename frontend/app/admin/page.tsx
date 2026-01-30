@@ -97,7 +97,7 @@ export default function AdminPage() {
             style={{ padding: '8px' }}
           />
           <input 
-            type="number" placeholder="시간당 가격 (원)" required
+            type="number" placeholder="시간당 가격 (만 원)" required
             value={newField.pricePerHour} onChange={e => setNewField({...newField, pricePerHour: Number(e.target.value)})}
             style={{ padding: '8px' }}
           />

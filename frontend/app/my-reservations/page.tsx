@@ -12,7 +12,7 @@ export default function MyReservations() {
     setLoading(true);
     
     try {
-      const res = await fetch(`http://43.203.187.236:3000/fields/reservations/mine?name=${userName}`);
+      const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reservations/mine?name=${userName}`);
       const data = await res.json();
       setReservations(data);
     } catch (err) {
@@ -25,7 +25,7 @@ export default function MyReservations() {
       if (!confirm('정말로 예약을 취소하시겠습니까?')) return;
 
       try {
-      const res = await fetch(`http://43.203.187.236:3000/fields/reservations/${reservationId}`, {
+      const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reservations/${reservationId}`, {
           method: 'DELETE',
       });
 
