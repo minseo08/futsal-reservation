@@ -41,17 +41,15 @@ export default function FieldDetailClient({ id }: { id: string }) {
     }
   };
 
-  // [수정] 시간 포맷팅 함수: 09:00 - 11:00 형식으로 출력
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('ko-KR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-      timeZone: 'Asia/Seoul',
-    });
+    
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    
+    return `${hours}:${minutes}`;
   };
-
+  
   if (error) return <div className="p-8 text-center text-red-500">정보를 불러오는 데 실패했습니다.</div>;
   if (!field) return <div className="p-8 text-center text-gray-500">경기장 정보를 가져오는 중...</div>;
 
@@ -67,7 +65,6 @@ export default function FieldDetailClient({ id }: { id: string }) {
             {field.timeSlots?.map((slot: any) => (
               <div key={slot.id} className="flex justify-between items-center p-5 bg-white border border-[#f1f3f5] rounded-2xl hover:border-[#4dabf7] transition-colors">
                 <span className="text-[#495057] font-bold">
-                  {/* 시차 문제를 해결하기 위해 formatTime 적용 */}
                   {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
                 </span>
                 
