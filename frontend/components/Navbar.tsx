@@ -36,6 +36,7 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6">
+          <Link href="/board" className="text-gray-600 hover:text-[#4dabf7] font-medium">게시판</Link>
           <Link href="/my-reservations" className="text-gray-600 hover:text-[#4dabf7] font-medium">내 예약</Link>
 
           {user?.role === 'ADMIN' && (
