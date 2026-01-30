@@ -7,6 +7,18 @@ export default function MyReservations() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const formatTimeRange = (startTime: string, endTime: string) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    
+    const startH = String(start.getUTCHours()).padStart(2, '0');
+    const startM = String(start.getUTCMinutes()).padStart(2, '0');
+    const endH = String(end.getUTCHours()).padStart(2, '0');
+    const endM = String(end.getUTCMinutes()).padStart(2, '0');
+    
+    return `${startH}:${startM} - ${endH}:${endM}`;
+  };
+
   const fetchReservations = async () => {
     if (!userName) return alert('이름을 입력해주세요.');
     setLoading(true);
@@ -85,7 +97,7 @@ export default function MyReservations() {
                   <span className="text-gray-400 mr-2">일시:</span>
                   {new Date(res.timeSlot.startTime).toLocaleDateString()} 
                   <span className="ml-2 font-semibold">
-                    {new Date(res.timeSlot.startTime).getHours()}:00 - {new Date(res.timeSlot.endTime).getHours()}:00
+                    {formatTimeRange(res.timeSlot.startTime, res.timeSlot.endTime)}
                   </span>
                 </p>
                 <p className="text-xs text-gray-300 mt-2">예약번호: {res.id}</p>
