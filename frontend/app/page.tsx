@@ -41,7 +41,7 @@ export default function Home() {
                 <span className="text-lg font-semibold text-[#2b8a3e]">
                   {field.pricePerHour.toLocaleString()}원 <span className="text-sm font-normal text-gray-400">/ 시간</span>
                 </span>
-                  <Link href={`/fields/${field.id}`} className="block">
+                  <Link href={`/fields?id=${field.id}`} className="block">
                     <button className="w-full bg-[#4dabf7] text-white px-4 py-3 rounded-xl text-sm font-semibold hover:bg-[#339af0] transition-all">
                       상세 예약하기
                     </button>

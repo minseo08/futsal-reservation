@@ -7,6 +7,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    // 백엔드 주소는 그대로 유지합니다.
     fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error();
@@ -34,12 +35,13 @@ export default function FieldDetailClient({ id }: { id: string }) {
     }
   };
 
+  // [수정] 시간 포맷팅 함수: 09:00 - 11:00 형식으로 출력
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString('ko-KR', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false,
+      hour12: false, // 오전/오후 대신 24시간제로 표시
     });
   };
 
@@ -58,6 +60,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
             {field.timeSlots?.map((slot: any) => (
               <div key={slot.id} className="flex justify-between items-center p-5 bg-white border border-[#f1f3f5] rounded-2xl hover:border-[#4dabf7] transition-colors">
                 <span className="text-[#495057] font-bold">
+                  {/* 시차 문제를 해결하기 위해 formatTime 적용 */}
                   {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
                 </span>
                 
