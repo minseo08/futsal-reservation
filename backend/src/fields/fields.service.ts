@@ -1,0 +1,135 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Field } from './field.entity';
+import { TimeSlot } from './timeslot.entity';
+import { Reservation } from './reservation.entity';
+
+@Injectable()
+export class FieldsService {
+  constructor(
+    @InjectRepository(Field)
+    private fieldsRepository: Repository<Field>,
+    @InjectRepository(TimeSlot)
+    private timeSlotRepository: Repository<TimeSlot>,
+    @InjectRepository(Reservation)
+    private reservationRepository: Repository<Reservation>,
+  ) {}
+
+  async createField(
+    name: string, 
+    address: string, 
+    pricePerHour: number,
+    startHour: number,
+    endHour: number 
+  ): Promise<Field> {
+    // 구장 정보 먼저 저장
+    const newField = this.fieldsRepository.create({ name, address, pricePerHour });
+    const savedField = await this.fieldsRepository.save(newField);
+
+    // 운영 시간에 맞춰 2시간 단위로 타임슬롯 생성 로직
+    const slots: TimeSlot[] = [];
+    for (let hour = startHour; hour < endHour; hour += 2) {
+      const startTime = new Date();
+      startTime.setHours(hour, 0, 0, 0);
+
+      const endTime = new Date();
+      endTime.setHours(hour + 2, 0, 0, 0);
+
+      const slot = this.timeSlotRepository.create({
+        startTime,
+        endTime,
+        field: savedField,
+      });
+      slots.push(slot);
+    }
+
+    // 생성된 모든 슬롯을 한꺼번에 DB에 저장
+    await this.timeSlotRepository.save(slots);
+
+    return savedField;
+  }
+
+  async findAll(): Promise<Field[]> {
+    return await this.fieldsRepository.find({ relations: ['timeSlots'] });
+  }
+
+  async bookSlot(timeSlotId: string, userName: string): Promise<Reservation> {
+    const slot = await this.timeSlotRepository.findOne({ where: { id: timeSlotId } });
+    
+    if (!slot || slot.status !== 'AVAILABLE') {
+      throw new Error('이미 예약되었거나 존재하지 않는 시간대입니다.');
+    }
+
+    slot.status = 'BOOKED';
+    await this.timeSlotRepository.save(slot);
+
+    const newReservation = this.reservationRepository.create({
+      userName,
+      timeSlot: slot,
+    });
+    
+    return await this.reservationRepository.save(newReservation);
+  }
+  async findOne(id: string): Promise<Field> {
+    const field = await this.fieldsRepository.findOne({
+      where: { id },
+      relations: ['timeSlots'],
+      order: {
+        timeSlots: {
+          startTime: 'ASC',
+        },
+      },
+    });
+    
+    if (!field) throw new Error('구장을 찾을 수 없습니다.');
+    return field;
+  }
+  async findMyReservations(userName: string): Promise<Reservation[]> {
+    return await this.reservationRepository.find({
+      where: { userName },
+      relations: ['timeSlot', 'timeSlot.field'],
+      order: { reservedAt: 'DESC' },
+    });
+  }
+  async cancelReservation(reservationId: string): Promise<void> {
+    const reservation = await this.reservationRepository.findOne({
+      where: { id: reservationId },
+      relations: ['timeSlot'],
+    });
+
+    if (!reservation) {
+      throw new Error('예약 내역을 찾을 수 없습니다.');
+    }
+
+    const slot = reservation.timeSlot;
+    slot.status = 'AVAILABLE';
+    await this.timeSlotRepository.save(slot);
+
+    await this.reservationRepository.remove(reservation);
+  }
+
+  async updateField(id: string, updateData: Partial<Field>): Promise<Field> {
+    const field = await this.fieldsRepository.findOne({ where: { id } });
+    
+    if (!field) {
+      throw new Error('수정할 구장을 찾을 수 없습니다.');
+    }
+
+    Object.assign(field, updateData);
+
+    return await this.fieldsRepository.save(field);
+  }
+
+  async deleteField(id: string): Promise<void> {
+    const field = await this.fieldsRepository.findOne({ where: { id } });
+    
+    if (!field) {
+      throw new Error('삭제할 구장을 찾을 수 없습니다.');
+    }
+
+    await this.fieldsRepository.remove(field);
+  }
+
+
+}
