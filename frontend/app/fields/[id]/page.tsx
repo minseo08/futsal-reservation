@@ -1,8 +1,11 @@
 import FieldDetailClient from './FieldDetailClient';
 
-export async function generateStaticParams() {
-  return [];
+
+export function generateStaticParams() {
+  return [{ id: 'template' }]; 
 }
+
+export const dynamicParams = false;
 
 export default async function FieldPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
