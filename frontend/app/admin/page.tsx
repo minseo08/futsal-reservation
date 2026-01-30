@@ -12,7 +12,7 @@ interface Field {
 
 export default function AdminPage() {
   const [fields, setFields] = useState<Field[]>([]);
-  const API_URL = 'http://43.203.187.236:3000/fields';
+  const API_URL = 'http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields';
 
   const fetchFields = async () => {
     try {

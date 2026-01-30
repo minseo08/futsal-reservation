@@ -14,7 +14,7 @@ export default function Home() {
   const [fields, setFields] = useState<Field[]>([]);
 
   useEffect(() => {
-    fetch('http://43.203.187.236:3000/fields')
+    fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields')
       .then((res) => res.json())
       .then((data) => setFields(data))
       .catch((err) => console.error("데이터 로드 실패:", err));

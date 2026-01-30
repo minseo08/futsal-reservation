@@ -6,7 +6,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
   const [field, setField] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`http://43.203.187.236:3000/fields/${id}`)
+    fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/${id}`)
       .then((res) => res.json())
       .then((data) => setField(data));
   }, [id]);
@@ -15,7 +15,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
     const userName = prompt('예약자 성함을 입력해주세요:');
     if (!userName) return;
 
-    const res = await fetch('http://43.203.187.236:3000/fields/reserve', {
+    const res = await fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reserve', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ timeSlotId, userName }),
