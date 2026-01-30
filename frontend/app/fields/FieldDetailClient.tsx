@@ -33,21 +33,26 @@ export default function FieldDetailClient({ id }: { id: string }) {
       router.push('/login');
       return;
     }
+    try {
+      const res = await fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reserve', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ timeSlotId }),
+      });
 
-    const res = await fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reserve', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization' : `Bearer ${token}`
-      },
-      body: JSON.stringify({ timeSlotId }),
-    });
-
-    if (res.ok) {
-      alert('예약이 완료되었습니다!');
-      window.location.reload();
-    } else {
-      alert('예약에 실패했습니다. 이미 예약된 시간대인지 확인해주세요.');
+      if (res.ok) {
+        alert('예약이 완료되었습니다! 이메일을 확인해 주세요.');
+        window.location.reload();
+      } else {
+        const errorData = await res.json();
+        alert(`예약 실패: ${errorData.message || '이미 예약된 시간대입니다.'}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert('서버와 통신 중 오류가 발생했습니다.');
     }
   };
 

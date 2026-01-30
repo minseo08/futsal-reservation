@@ -8,11 +8,16 @@ export default function Navbar() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
+  const checkUser = () => {
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    setUser(savedUser ? JSON.parse(savedUser) : null);
+  };
+
+  useEffect(() => {
+    checkUser();
+    
+    window.addEventListener('auth-change', checkUser);
+    return () => window.removeEventListener('auth-change', checkUser);
   }, []);
 
   const handleLogout = () => {
@@ -31,7 +36,6 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-gray-600 hover:text-[#4dabf7] font-medium">구장목록</Link>
           <Link href="/my-reservations" className="text-gray-600 hover:text-[#4dabf7] font-medium">내 예약</Link>
 
           {user?.role === 'ADMIN' && (
