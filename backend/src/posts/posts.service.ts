@@ -2,6 +2,7 @@ import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/commo
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post, PostCategory } from './entities/post.entity';
+import { Comment } from './entities/comment.entity';
 import { User, UserRole } from '../users/entities/user.entity';
 
 @Injectable()
@@ -9,6 +10,8 @@ export class PostsService {
   constructor(
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
   ) {}
 
   async create(title: string, content: string, category: PostCategory, user: User) {
@@ -33,7 +36,10 @@ export class PostsService {
   }
 
   async findOne(id: string) {
-    const post = await this.postsRepository.findOne({ where: { id } });
+    const post = await this.postsRepository.findOne({
+      where: { id },
+      relations: ['author', 'comments', 'comments.author']
+    });
     if (!post) throw new NotFoundException('게시글을 찾을 수 없습니다.');
     return post;
   }
@@ -46,5 +52,14 @@ export class PostsService {
     }
 
     return await this.postsRepository.remove(post);
+  }
+  async addComment(postId: string, content: string, user: User) {
+    const post = await this.findOne(postId);
+    const comment = this.commentRepository.create({
+      content,
+      author: user,
+      post,
+    });
+    return await this.commentRepository.save(comment);
   }
 }

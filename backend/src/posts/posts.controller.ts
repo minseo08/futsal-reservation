@@ -22,7 +22,7 @@ export class PostsController {
   findAll() {
     return this.postsService.findAll();
   }
-  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
@@ -32,5 +32,11 @@ export class PostsController {
   @Delete(':id')
   remove(@Param('id') id: string, @Request() req: any) {
     return this.postsService.remove(id, req.user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':id/comments')
+  async addComment(@Param('id') postId: string, @Body('content') content: string, @Request() req: any) {
+    return await this.postsService.addComment(postId, content, req.user);
   }
 }
