@@ -1,7 +1,8 @@
 import FieldDetailClient from './FieldDetailClient';
 
-// generateStaticParams를 삭제하거나 아래와 같이 비워둡니다.
-export const dynamicParams = true;
+export async function generateStaticParams() {
+  return [];
+}
 
 export default async function FieldPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
