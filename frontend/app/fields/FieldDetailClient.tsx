@@ -7,13 +7,19 @@ export default function FieldDetailClient({ id }: { id: string }) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    // 백엔드 주소는 그대로 유지합니다.
     fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();
       })
-      .then((data) => setField(data))
+      .then((data) => {
+        if (data.timeSlots) {
+          data.timeSlots.sort((a: any, b: any) => 
+            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+          );
+        }
+        setField(data);
+      })
       .catch(() => setError(true));
   }, [id]);
 
@@ -28,7 +34,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
     });
 
     if (res.ok) {
-      alert('🎉 예약이 완료되었습니다!');
+      alert('예약이 완료되었습니다!');
       window.location.reload();
     } else {
       alert('예약에 실패했습니다. 이미 예약된 시간대인지 확인해주세요.');
@@ -41,7 +47,8 @@ export default function FieldDetailClient({ id }: { id: string }) {
     return date.toLocaleTimeString('ko-KR', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false, // 오전/오후 대신 24시간제로 표시
+      hour12: false,
+      timeZone: 'Asia/Seoul',
     });
   };
 
