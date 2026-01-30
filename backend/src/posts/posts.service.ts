@@ -23,10 +23,12 @@ export class PostsService {
       title,
       content,
       category,
-      author: user,
+      author: { id: user.id } as any,
     });
 
-    return await this.postsRepository.save(post);
+    const savedPost = await this.postsRepository.save(post);
+
+    return this.findOne(savedPost.id);
   }
 
   async findAll() {
