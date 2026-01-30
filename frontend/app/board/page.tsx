@@ -59,7 +59,7 @@ export default function BoardPage() {
         <div className="bg-white rounded-[2rem] shadow-sm border border-gray-50 overflow-hidden">
           {filteredPosts.length > 0 ? (
             filteredPosts.map((post: any) => (
-              <Link href={`/board/${post.id}`} key={post.id}>
+              <Link href={`/board/detail?id=${post.id}`} key={post.id}>
                 <div className="p-6 border-b border-[#f1f3f5] hover:bg-[#fbfcfe] transition group">
                   <div className="flex items-center gap-3 mb-2">
                     {post.category === 'NOTICE' && (
