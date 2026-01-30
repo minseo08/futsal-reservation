@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Field } from './field.entity';
 import { TimeSlot } from './timeslot.entity';
 import { Reservation } from './reservation.entity';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class FieldsService {
@@ -14,6 +15,7 @@ export class FieldsService {
     private timeSlotRepository: Repository<TimeSlot>,
     @InjectRepository(Reservation)
     private reservationRepository: Repository<Reservation>,
+    private mailService: MailService,
   ) {}
 
   async createField(
@@ -54,12 +56,17 @@ export class FieldsService {
     return await this.fieldsRepository.find({ relations: ['timeSlots'] });
   }
 
-  async bookSlot(timeSlotId: string, userName: string): Promise<Reservation> {
-    const slot = await this.timeSlotRepository.findOne({ where: { id: timeSlotId } });
+  async bookSlot(timeSlotId: string, userName: string, userEmail: string): Promise<Reservation> {
+    const slot = await this.timeSlotRepository.findOne({ 
+      where: { id: timeSlotId },
+      relations: ['field'] 
+    });
     
     if (!slot || slot.status !== 'AVAILABLE') {
       throw new Error('이미 예약되었거나 존재하지 않는 시간대입니다.');
     }
+
+    const timeInfo = `${slot.startTime.getHours()}:00 - ${slot.endTime.getHours()}:00`;
 
     slot.status = 'BOOKED';
     await this.timeSlotRepository.save(slot);
@@ -69,7 +76,16 @@ export class FieldsService {
       timeSlot: slot,
     });
     
-    return await this.reservationRepository.save(newReservation);
+    const savedReservation = await this.reservationRepository.save(newReservation);
+
+    await this.mailService.sendReservationConfirm(
+      userEmail, 
+      userName, 
+      slot.field.name, 
+      timeInfo
+    );
+
+    return savedReservation;
   }
   async findOne(id: string): Promise<Field> {
     const field = await this.fieldsRepository.findOne({

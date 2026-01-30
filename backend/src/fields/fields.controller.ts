@@ -31,7 +31,7 @@ export class FieldsController {
     @Body('timeSlotId') timeSlotId: string,
     @Request() req: any
   ) {
-        return this.fieldsService.bookSlot(timeSlotId, req.user.name);
+        return this.fieldsService.bookSlot(timeSlotId, req.user.name, req.user.email);
   }
 
   @Get(':id')

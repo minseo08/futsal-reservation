@@ -6,9 +6,12 @@ import { TimeSlot } from './timeslot.entity';
 import { Reservation } from './reservation.entity';
 import { FieldsService } from './fields.service';
 import { FieldsController } from './fields.controller';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Field, TimeSlot, Reservation])],
+  imports: [TypeOrmModule.forFeature([Field, TimeSlot, Reservation]),
+  MailModule,
+],
   providers: [FieldsService],
   controllers: [FieldsController],
 })
