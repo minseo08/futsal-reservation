@@ -15,7 +15,10 @@ export class TimeSlot {
   @Column({ default: 'AVAILABLE' }) // AVAILABLE, PENDING, BOOKED
   status: string;
 
-  @ManyToOne(() => Field, (field) => field.timeSlots)
+  @ManyToOne(() => Field, (field) => field.timeSlots, {
+    onDelete: 'CASCADE',
+  })
+
   @JoinColumn({ name: 'field_id' })
   field: Field;
 }

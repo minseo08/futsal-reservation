@@ -24,6 +24,8 @@ export class Field {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.field)
+  @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.field, {
+    cascade: true,
+  })
   timeSlots: TimeSlot[];
 }
