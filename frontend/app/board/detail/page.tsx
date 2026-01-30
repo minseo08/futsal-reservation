@@ -19,7 +19,12 @@ function PostDetailContent() {
     if (id) {
       fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts/${id}`)
         .then((res) => res.json())
-        .then((data) => setPost(data))
+        .then((data) => {
+          console.log("서버에서 받은 원본 데이터:", data);
+          console.log("작성자 객체 존재 여부:", data.author);
+          console.log("작성자 이름 데이터:", data.author?.name);
+          setPost(data);
+        })
         .catch((err) => console.error('데이터 로딩 실패:', err));
     }
   }, [id]);
