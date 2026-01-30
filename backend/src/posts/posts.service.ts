@@ -64,4 +64,19 @@ export class PostsService {
     });
     return await this.commentRepository.save(comment);
   }
+
+  async removeComment(commentId: string, user: User) {
+    const comment = await this.commentRepository.findOne({ 
+      where: { id: commentId },
+      relations: ['author'] 
+    });
+
+    if (!comment) throw new NotFoundException('댓글을 찾을 수 없습니다.');
+
+    if (comment.author.id !== user.id && user.role !== UserRole.ADMIN) {
+      throw new ForbiddenException('삭제 권한이 없습니다.');
+    }
+    return await this.commentRepository.remove(comment);
+  }
+
 }

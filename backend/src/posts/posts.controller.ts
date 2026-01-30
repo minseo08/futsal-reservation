@@ -39,4 +39,13 @@ export class PostsController {
   async addComment(@Param('id') postId: string, @Body('content') content: string, @Request() req: any) {
     return await this.postsService.addComment(postId, content, req.user);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('comments/:commentId')
+  removeComment(
+    @Param('commentId') commentId: string, 
+    @Request() req: any
+  ) {
+    return this.postsService.removeComment(commentId, req.user);
+  }
 }
