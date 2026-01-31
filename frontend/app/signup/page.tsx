@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -26,43 +27,88 @@ export default function SignupPage() {
     }
   };
 
-  return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#4dabf7] to-[#339af0] text-white py-20 md:py-0">
+return (
+    <main className="min-h-screen flex flex-col md:flex-row bg-[#f8f9fa]">
+      <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#f8fbff] to-[#f0f7ff] text-[#343a40] py-20 md:py-0">
         <div className="mb-6 animate-fade-in">
-          <div className="mb-4"><Image 
-            src="/postbar.png"
-            alt="Futsal Logo"
-            width={64} 
-            height={64}
-            className="mx-auto rounded-2xl"
-          /></div>
-          <h1 className="text-5xl font-extrabold tracking-tight mb-4">
-            Futsal Hub
+          <h1 className="text-5xl font-extrabold tracking-tight mb-4 flex items-center gap-4">
+            <Image 
+              src="/postbar.png"
+              alt="Futsal Logo"
+              width={48}
+              height={48}
+              className="rounded-xl object-cover"
+            />
+            <span>Futsal Hub</span>
           </h1>
-          <p className="text-xl text-blue-50 font-medium leading-relaxed max-w-md">
+          <p className="text-xl text-[#868e96] font-medium leading-relaxed max-w-md">
             당신의 다음 경기를 위한 가장 완벽한 예약 파트너. <br />
             지금 바로 필드를 확인하세요.
           </p>
         </div>
         
         <div className="mt-12 flex gap-4">
-          <div className="w-12 h-1 bg-white/30 rounded-full" />
-          <div className="w-6 h-1 bg-white/30 rounded-full" />
+          <div className="w-12 h-1 bg-[#4dabf7]/20 rounded-full" />
+          <div className="w-6 h-1 bg-[#4dabf7]/20 rounded-full" />
         </div>
       </div>
-      <form onSubmit={handleSignup} className="p-10 bg-white rounded-3xl shadow-xl w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">회원가입</h1>
-        <input type="text" placeholder="이름" className="w-full p-3 mb-4 border rounded-xl" 
-               onChange={(e) => setName(e.target.value)} required />
-        <input type="email" placeholder="이메일" className="w-full p-3 mb-4 border rounded-xl" 
-               onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="비밀번호" className="w-full p-3 mb-6 border rounded-xl" 
-               onChange={(e) => setPassword(e.target.value)} required />
-        <button className="w-full bg-[#4dabf7] text-white p-3 rounded-xl font-bold hover:bg-[#339af0]">
-          가입하기
-        </button>
-      </form>
+
+      <div className="md:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-md bg-white p-12 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100">
+          <div className="mb-10 text-center md:text-left">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">회원가입</h2>
+            <p className="text-gray-400 text-sm">새로운 팀원을 환영합니다!</p>
+          </div>
+
+          <form onSubmit={handleSignup} className="space-y-5">
+            <div>
+              <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Name</label>
+              <input 
+                type="text" 
+                placeholder="이름을 입력해 주세요" 
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
+                onChange={(e) => setName(e.target.value)} 
+                required 
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Email</label>
+              <input 
+                type="email" 
+                placeholder="example@futsal.com" 
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
+                onChange={(e) => setEmail(e.target.value)} 
+                required 
+              />
+            </div>
+            
+            <div>
+              <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Password</label>
+              <input 
+                type="password" 
+                placeholder="••••••••" 
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+              />
+            </div>
+
+            <button className="w-full bg-[#4dabf7] text-white p-4 rounded-2xl font-bold text-lg hover:bg-[#339af0] transition-all shadow-lg shadow-blue-100 mt-4 active:scale-[0.98]">
+              가입하기
+            </button>
+          </form>
+
+          <div className="mt-10 text-center">
+            <p className="text-gray-400 text-sm">
+              이미 계정이 있으신가요? 
+              <Link href="/login" className="ml-2 text-[#4dabf7] font-bold hover:underline">
+                로그인으로 이동
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
