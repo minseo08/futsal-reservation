@@ -9,6 +9,7 @@ interface Field {
   name: string;
   address: string;
   pricePerHour: number;
+  thumbnailUrl?: string;
 }
 
 export default function HomePage() {
@@ -88,16 +89,26 @@ export default function HomePage() {
               key={field.id} 
               className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-50 hover:shadow-md transition-shadow"
             >
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-xl font-bold text-[#495057]">{field.name}</h2>
-                <span className="bg-[#e7f5ff] text-[#1971c2] text-xs font-bold px-3 py-1 rounded-full">
+              <div className="flex justify-between items-start mb-6">
+                <div className="flex-1">
+                  <h2 className="text-xl font-bold text-[#495057] mb-1">{field.name}</h2>
+                  <div className="flex items-center gap-3">
+                    <p className="text-[#868e96] text-sm leading-relaxed max-w-[150px]">
+                      {field.address}
+                    </p>
+                    {field.thumbnailUrl && (
+                      <img 
+                        src={field.thumbnailUrl} 
+                        alt={field.name} 
+                        className="w-12 h-12 rounded-2xl object-cover border border-gray-100 shadow-sm"
+                      />
+                    )}
+                  </div>
+                </div>
+                <span className="bg-[#e7f5ff] text-[#1971c2] text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                   운영 중
                 </span>
               </div>
-              
-              <p className="text-[#868e96] text-sm mb-8 leading-relaxed">
-                {field.address}
-              </p>
               
               <div className="flex items-center justify-between pt-6 border-t border-[#f1f3f5]">
                 <div>

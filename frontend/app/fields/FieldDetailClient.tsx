@@ -26,7 +26,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
   }, [id]);
 
   const handleBook = async (timeSlotId: string) => {
-    const token = localStorage.getItem('token'); // 주머니에서 티켓 꺼내기
+    const token = localStorage.getItem('token');
 
     if (!token) {
       alert('로그인이 필요한 서비스입니다.');
@@ -70,35 +70,60 @@ export default function FieldDetailClient({ id }: { id: string }) {
 
   return (
     <main className="min-h-screen bg-[#f8f9fa] p-8">
-      <div className="max-w-2xl mx-auto bg-white p-10 rounded-[2rem] shadow-sm border border-gray-50">
-        <h1 className="text-3xl font-bold text-[#343a40] mb-2">{field.name}</h1>
-        <p className="text-[#868e96] mb-10">{field.address}</p>
-        
-        <section>
-          <h3 className="text-lg font-semibold text-[#495057] mb-5">예약 시간 선택</h3>
-          <div className="grid gap-4">
-            {field.timeSlots?.map((slot: any) => (
-              <div key={slot.id} className="flex justify-between items-center p-5 bg-white border border-[#f1f3f5] rounded-2xl hover:border-[#4dabf7] transition-colors">
-                <span className="text-[#495057] font-bold">
-                  {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
-                </span>
-                
-                {slot.status === 'AVAILABLE' ? (
-                  <button 
-                    onClick={() => handleBook(slot.id)} 
-                    className="bg-[#4dabf7] text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#339af0] transition-all"
-                  >
-                    예약 가능
-                  </button>
-                ) : (
-                  <span className="text-[#adb5bd] bg-[#f1f3f5] px-4 py-2 rounded-xl text-sm font-medium">
-                    예약 마감
-                  </span>
-                )}
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white p-10 rounded-[2rem] shadow-sm border border-gray-50 mb-8">
+          
+          {(field.thumbnailUrl || (field.imageUrls && field.imageUrls.length > 0)) && (
+            <div className="grid grid-cols-4 gap-4 mb-10">
+              <div className="col-span-4 md:col-span-3">
+                <img 
+                  src={field.thumbnailUrl || field.imageUrls?.[0]} 
+                  className="w-full h-64 md:h-80 object-cover rounded-[2rem] border border-gray-100 shadow-sm"
+                  alt="구장 대표 이미지"
+                />
               </div>
-            ))}
-          </div>
-        </section>
+              <div className="hidden md:flex flex-col gap-4 overflow-y-auto max-h-80 pr-2">
+                {field.imageUrls?.map((url: string, index: number) => (
+                  <img 
+                    key={index}
+                    src={url}
+                    className="w-full h-24 object-cover rounded-2xl border border-gray-50 hover:border-[#4dabf7] transition-all cursor-pointer"
+                    alt={`상세 이미지 ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          <h1 className="text-3xl font-bold text-[#343a40] mb-2">{field.name}</h1>
+          <p className="text-[#868e96] mb-10">{field.address}</p>
+          
+          <section>
+            <h3 className="text-lg font-semibold text-[#495057] mb-5">예약 시간 선택</h3>
+            <div className="grid gap-4">
+              {field.timeSlots?.map((slot: any) => (
+                <div key={slot.id} className="flex justify-between items-center p-5 bg-white border border-[#f1f3f5] rounded-2xl hover:border-[#4dabf7] transition-colors shadow-sm">
+                  <span className="text-[#495057] font-bold">
+                    {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                  </span>
+                  
+                  {slot.status === 'AVAILABLE' ? (
+                    <button 
+                      onClick={() => handleBook(slot.id)} 
+                      className="bg-[#4dabf7] text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-[#339af0] transition-all"
+                    >
+                      예약 가능
+                    </button>
+                  ) : (
+                    <span className="text-[#adb5bd] bg-[#f1f3f5] px-4 py-2 rounded-xl text-sm font-medium">
+                      예약 마감
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   );
