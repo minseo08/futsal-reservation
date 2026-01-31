@@ -56,6 +56,8 @@ jobs:
           cd frontend
           npm install
           npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Deploy to S3
         run: |
