@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { API_BASE_URL } from './utils/api';
 
 interface Field {
   id: string;
@@ -30,7 +31,7 @@ export default function HomePage() {
       router.push('/login');
       return;
     }
-    const baseUrl = 'http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields';
+    const baseUrl = `${API_BASE_URL}/fields`;
     const fetchUrl = selectedRegion === '전체' 
       ? baseUrl 
       : `${baseUrl}?region=${encodeURIComponent(selectedRegion)}`;

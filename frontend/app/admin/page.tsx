@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { API_BASE_URL } from '../utils/api';
 
 interface Field {
   id: string;
@@ -26,8 +27,6 @@ export default function AdminPage() {
     imageUrlsInput: ''
   });
 
-  const API_URL = 'http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields';
-
   const getAuthHeaders = (contentType = 'application/json') => {
     const token = localStorage.getItem('token');
     return {
@@ -38,7 +37,7 @@ export default function AdminPage() {
 
   const fetchFields = async () => {
     try {
-      const res = await fetch(API_URL);
+      const res = await fetch(`${API_BASE_URL}/fields`);
       const data = await res.json();
       setFields(data);
     } catch (error) {
@@ -58,7 +57,7 @@ export default function AdminPage() {
       .filter(url => url !== '');
     
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_BASE_URL}/fields`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({
@@ -85,7 +84,7 @@ export default function AdminPage() {
     if (!confirm('정말로 이 구장을 삭제할까요?')) return;
 
     try {
-      const res = await fetch(`${API_URL}/${id}`, { 
+      const res = await fetch(`${API_BASE_URL}/fields/${id}`, { 
         method: 'DELETE',
         headers: getAuthHeaders()
       });

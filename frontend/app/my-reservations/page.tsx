@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '../utils/api';
 
 export default function MyReservations() {
   const [reservations, setReservations] = useState([]);
@@ -30,7 +31,7 @@ export default function MyReservations() {
     }
 
     try {
-      const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reservations/mine`, {
+      const res = await fetch(`${API_BASE_URL}/fields/reservations/mine`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -53,7 +54,7 @@ export default function MyReservations() {
 
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reservations/${reservationId}`, {
+      const res = await fetch(`${API_BASE_URL}/fields/reservations/${reservationId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

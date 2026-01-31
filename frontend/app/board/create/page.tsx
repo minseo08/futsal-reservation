@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '../../utils/api';
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState('');
@@ -24,7 +25,7 @@ export default function CreatePostPage() {
     e.preventDefault();
     const token = localStorage.getItem('token');
 
-    const res = await fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts', {
+    const res = await fetch(`${API_BASE_URL}/posts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

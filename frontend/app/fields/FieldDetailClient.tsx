@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../utils/api';
 
 export default function FieldDetailClient({ id }: { id: string }) {
   const [field, setField] = useState<any>(null);
@@ -9,7 +10,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/${id}`)
+    fetch(`${API_BASE_URL}/fields/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();
@@ -34,7 +35,7 @@ export default function FieldDetailClient({ id }: { id: string }) {
       return;
     }
     try {
-      const res = await fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields/reserve', {
+      const res = await fetch(`${API_BASE_URL}/fields/reserve`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

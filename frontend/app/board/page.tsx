@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '../utils/api';
 
 export default function BoardPage() {
   const [posts, setPosts] = useState([]);
@@ -14,7 +15,7 @@ export default function BoardPage() {
     const savedUser = localStorage.getItem('user');
     if (savedUser) setUser(JSON.parse(savedUser));
 
-    fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts')
+    fetch(`${API_BASE_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data));
   }, []);

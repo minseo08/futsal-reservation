@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { API_BASE_URL } from '../../utils/api';
 
 function PostDetailContent() {
   const searchParams = useSearchParams();
@@ -17,7 +18,7 @@ function PostDetailContent() {
     if (savedUser) setUser(JSON.parse(savedUser));
 
     if (id) {
-      fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts/${id}`)
+      fetch(`${API_BASE_URL}/posts/${id}`)
         .then((res) => res.json())
         .then((data) => {
           console.log("서버에서 받은 원본 데이터:", data);
@@ -34,7 +35,7 @@ function PostDetailContent() {
     const token = localStorage.getItem('token');
     if (!token) return alert('로그인이 필요합니다.');
 
-    const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts/${id}/comments`, {
+    const res = await fetch(`${API_BASE_URL}/posts/${id}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ function PostDetailContent() {
 
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/posts/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -80,7 +81,7 @@ function PostDetailContent() {
 
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/posts/comments/${commentId}`, {
+      const res = await fetch(`${API_BASE_URL}/posts/comments/${commentId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
