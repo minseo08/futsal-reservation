@@ -77,7 +77,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#f8f9fa] p-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <header className="mb-12">
           <h1 className="text-3xl font-bold text-[#343a40] mb-2">전체 구장 목록</h1>
           <p className="text-[#868e96]">지금 바로 비어있는 구장을 예약해 보세요!</p>
