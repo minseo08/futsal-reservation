@@ -32,13 +32,18 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-[#4dabf7]">
-          FutsalHub
+        <Link href="/" className="flex items-center gap-2 group">
+          <Image 
+            src="/postbar.png"
+            alt="Futsal Logo"
+            width={28} 
+            height={28}
+            className="rounded-lg object-cover transition-transform group-hover:scale-110"
+          />
+          <span className="text-xl font-bold text-[#4dabf7]">
+            FutsalHub
+          </span>
         </Link>
-        <div className="mb-4"><Image 
-          src="/postbar.png"
-          alt="Futsal Logo"
-        /></div>
         <div className="flex items-center gap-6">
           <Link href="/board" className="text-gray-600 hover:text-[#4dabf7] font-medium">게시판</Link>
           <Link href="/my-reservations" className="text-gray-600 hover:text-[#4dabf7] font-medium">내 예약</Link>
