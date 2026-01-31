@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row bg-[#f8f9fa]">
-      <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#f8fbff] to-[#f0f7ff] text-[#343a40] py-20 md:py-0">
+      <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#f1f8ff] to-[#e7f3ff] text-[#343a40] py-20 md:py-0 border-r border-gray-100">
         <div className="mb-6 animate-fade-in">
           <h1 className="text-5xl font-extrabold tracking-tight mb-4 flex items-center gap-4">
             <Image src="/postbar.png"
@@ -43,7 +43,7 @@ export default function LoginPage() {
             />
             <span>Futsal Hub</span>
           </h1>
-          <p className="text-xl text-blue-50 font-medium leading-relaxed max-w-md">
+          <p className="text-xl text-[#868e96] font-medium leading-relaxed max-w-md">
             당신의 다음 경기를 위한 가장 완벽한 예약 파트너. <br />
             지금 바로 필드를 확인하세요.
           </p>

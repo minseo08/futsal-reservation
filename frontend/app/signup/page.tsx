@@ -29,7 +29,7 @@ export default function SignupPage() {
 
 return (
     <main className="min-h-screen flex flex-col md:flex-row bg-[#f8f9fa]">
-      <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#f8fbff] to-[#f0f7ff] text-[#343a40] py-20 md:py-0">
+      <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#f1f8ff] to-[#e7f3ff] text-[#343a40] py-20 md:py-0 border-r border-gray-100">
         <div className="mb-6 animate-fade-in">
           <h1 className="text-5xl font-extrabold tracking-tight mb-4 flex items-center gap-4">
             <Image 
