@@ -38,9 +38,6 @@ export default function Navbar() {
         <div className="mb-4"><Image 
           src="/postbar.png"
           alt="Futsal Logo"
-          width={64} 
-          height={64}
-          className="mx-auto rounded-2xl"
         /></div>
         <div className="flex items-center gap-6">
           <Link href="/board" className="text-gray-600 hover:text-[#4dabf7] font-medium">게시판</Link>

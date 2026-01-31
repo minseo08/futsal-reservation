@@ -80,9 +80,6 @@ export default function LoginPage() {
             <div className="mb-4"><Image 
               src="/postbar.png"
               alt="Futsal Logo"
-              width={64} 
-              height={64}
-              className="mx-auto rounded-2xl"
             /></div>
           <p className="text-xl text-blue-50 font-medium leading-relaxed max-w-md">
             당신의 다음 경기를 위한 가장 완벽한 예약 파트너. <br />
