@@ -41,17 +41,16 @@ export default function LoginPage() {
               height={48}
               className="rounded-xl object-cover"
             />
-            <span>Futsal Hub</span>
+            <span>FutsalHub</span>
           </h1>
           <p className="text-xl text-[#868e96] font-medium leading-relaxed max-w-md">
             당신의 다음 경기를 위한 가장 완벽한 예약 파트너. <br />
             지금 바로 필드를 확인하세요.
           </p>
         </div>
-        
         <div className="mt-12 flex gap-4">
-          <div className="w-12 h-1 bg-white/30 rounded-full" />
-          <div className="w-6 h-1 bg-white/30 rounded-full" />
+          <div className="w-12 h-1 bg-[#4dabf7]/20 rounded-full" />
+          <div className="w-6 h-1 bg-[#4dabf7]/20 rounded-full" />
         </div>
       </div>
 

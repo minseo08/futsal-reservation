@@ -39,14 +39,13 @@ return (
               height={48}
               className="rounded-xl object-cover"
             />
-            <span>Futsal Hub</span>
+            <span>FutsalHub</span>
           </h1>
           <p className="text-xl text-[#868e96] font-medium leading-relaxed max-w-md">
             당신의 다음 경기를 위한 가장 완벽한 예약 파트너. <br />
             지금 바로 필드를 확인하세요.
           </p>
         </div>
-        
         <div className="mt-12 flex gap-4">
           <div className="w-12 h-1 bg-[#4dabf7]/20 rounded-full" />
           <div className="w-6 h-1 bg-[#4dabf7]/20 rounded-full" />
@@ -57,7 +56,7 @@ return (
         <div className="w-full max-w-md bg-white p-12 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100">
           <div className="mb-10 text-center md:text-left">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">회원가입</h2>
-            <p className="text-gray-400 text-sm">새로운 팀원을 환영합니다!</p>
+            <p className="text-gray-400 text-sm">본인의 메일로 가입하여 예약 시에 메일로 확인받으세요</p>
           </div>
 
           <form onSubmit={handleSignup} className="space-y-5">
@@ -65,7 +64,7 @@ return (
               <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Name</label>
               <input 
                 type="text" 
-                placeholder="이름을 입력해 주세요" 
+                placeholder="이름 또는 닉네임" 
                 className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
                 onChange={(e) => setName(e.target.value)} 
                 required 
@@ -76,7 +75,7 @@ return (
               <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Email</label>
               <input 
                 type="email" 
-                placeholder="example@futsal.com" 
+                placeholder="이메일" 
                 className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
@@ -87,7 +86,7 @@ return (
               <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Password</label>
               <input 
                 type="password" 
-                placeholder="••••••••" 
+                placeholder="비밀번호" 
                 className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
