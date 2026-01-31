@@ -4,9 +4,9 @@
 
 FutsalHub는 풋살 경기장 예약의 번거로움을 해결하고, 관리자와 사용자 모두에게 최적화된 예약 경험을 제공하는 풀스택 웹 애플리케이션
 
-![FutsalHub 메인 화면1](./images/webscreen1.png)
-![FutsalHub 메인 화면2](./images/webscreen2.png)
-![FutsalHub 메인 화면3](./images/webscreen3.png)
+<img src="./images/webscreen1.png" width="25%" alt="메인 화면1">
+<img src="./images/webscreen2.png" width="25%" alt="메인 화면2">
+<img src="./images/webscreen3.png" width="25%" alt="메인 화면3">
 ---
 
 ## 주요 기능 (Key Features)
