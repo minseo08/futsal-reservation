@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Field } from './field.entity';
+import { Field, LocationRegion } from './field.entity';
 import { TimeSlot } from './timeslot.entity';
 import { Reservation } from './reservation.entity';
 import { MailService } from '../mail/mail.service';
@@ -24,10 +24,11 @@ export class FieldsService {
     pricePerHour: number,
     startHour: number,
     endHour: number,
+    region: LocationRegion,
     thumbnailUrl?: string,
     imageUrls?: string[]
   ): Promise<Field> {
-    const newField = this.fieldsRepository.create({ name, address, pricePerHour, thumbnailUrl, imageUrls });
+    const newField = this.fieldsRepository.create({ name, address, pricePerHour, region, thumbnailUrl, imageUrls });
     const savedField = await this.fieldsRepository.save(newField);
 
     const slots: TimeSlot[] = [];
@@ -51,8 +52,11 @@ export class FieldsService {
     return savedField;
   }
 
-  async findAll(): Promise<Field[]> {
-    return await this.fieldsRepository.find({ relations: ['timeSlots'] });
+  async findAll(region?: LocationRegion): Promise<Field[]> {
+    return await this.fieldsRepository.find({
+      where: region ? { region } : {},
+      relations: ['timeSlots']
+    });
   }
 
   async bookSlot(timeSlotId: string, userName: string, userEmail: string): Promise<Reservation> {

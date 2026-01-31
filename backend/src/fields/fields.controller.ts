@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param, Query, Patch, Delete, UseGuards, Request } from '@nestjs/common';
 import { FieldsService } from './fields.service';
-import { Field } from './field.entity';
+import { Field, LocationRegion } from './field.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
 
@@ -16,15 +16,16 @@ export class FieldsController {
     @Body('pricePerHour') pricePerHour: number,
     @Body('startHour') startHour: number,
     @Body('endHour') endHour: number,
+    @Body('region') region: LocationRegion,
     @Body('thumbnailUrl') thumbnailUrl: string,
     @Body('imageUrls') imageUrls: string[]
   ) {
-    return this.fieldsService.createField(name, address, pricePerHour, startHour, endHour, thumbnailUrl, imageUrls);
+    return this.fieldsService.createField(name, address, pricePerHour, startHour, endHour, region, thumbnailUrl, imageUrls);
   }
 
   @Get()
-  findAll() {
-    return this.fieldsService.findAll();
+  findAll(@Query('region') region?: LocationRegion) {
+    return this.fieldsService.findAll(region);
   }
 
   @UseGuards(AuthGuard('jwt'))

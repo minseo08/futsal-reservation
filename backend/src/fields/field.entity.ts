@@ -1,6 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, VersionColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { TimeSlot } from './timeslot.entity';
 
+export enum LocationRegion {
+  SEOUL = '서울',
+  GYEONGGI_INCHEON = '경기/인천',
+  CHUNGCHEONG = '충청',
+  JEOLLA = '전라',
+  GYEONGSANG = '경상',
+  GANGWON = '강원',
+}
+
 @Entity('fields')
 export class Field {
   @PrimaryGeneratedColumn('uuid')
@@ -29,6 +38,13 @@ export class Field {
 
   @Column("simple-array", { nullable: true })
   imageUrls: string[];
+
+  @Column({
+    type: 'enum',
+    enum: LocationRegion,
+    default: LocationRegion.SEOUL,
+  })
+  region: LocationRegion;
 
   @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.field, {
     cascade: true,

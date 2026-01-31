@@ -13,11 +13,15 @@ interface Field {
   thumbnailUrl?: string;
 }
 
+const REGIONS = ['전체', '서울', '경기/인천', '충청', '전라', '경상', '강원'];
+
 export default function HomePage() {
   const router = useRouter();
   const [fields, setFields] = useState<Field[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const [selectedRegion, setSelectedRegion] = useState('전체');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,8 +30,12 @@ export default function HomePage() {
       router.push('/login');
       return;
     }
+    const baseUrl = 'http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields';
+    const fetchUrl = selectedRegion === '전체' 
+      ? baseUrl 
+      : `${baseUrl}?region=${encodeURIComponent(selectedRegion)}`;
 
-    fetch('http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields', {
+    fetch(fetchUrl, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -47,7 +55,7 @@ export default function HomePage() {
         localStorage.removeItem('token');
         router.push('/login');
       });
-  }, [router]);
+  }, [router, selectedRegion]);
 
   if (loading) {
     return (
@@ -87,7 +95,23 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto">
         <header className="mb-12">
           <h1 className="text-3xl font-bold text-[#343a40] mb-2">전체 구장 목록</h1>
-          <p className="text-[#868e96]">지금 바로 비어있는 구장을 예약해 보세요!</p>
+          <p className="text-[#868e96] mb-8">지금 바로 비어있는 구장을 예약해 보세요!</p>
+
+          <div className="flex flex-wrap gap-3">
+            {REGIONS.map((region) => (
+              <button
+                key={region}
+                onClick={() => setSelectedRegion(region)}
+                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all transform active:scale-95 ${
+                  selectedRegion === region
+                    ? 'bg-[#4dabf7] text-white shadow-md shadow-blue-100'
+                    : 'bg-white text-gray-400 border border-gray-100 hover:bg-gray-50'
+                }`}
+              >
+                {region}
+              </button>
+            ))}
+          </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
