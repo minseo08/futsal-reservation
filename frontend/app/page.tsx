@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Field {
   id: string;
@@ -52,7 +53,13 @@ export default function HomePage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa]">
         <div className="text-center">
-          <div className="inline-block animate-bounce text-4xl mb-4">⚽️</div>
+          <div className="mb-4"><Image 
+            src="/futsal.png"
+            alt="waiting logo"
+            width={64} 
+            height={64}
+            className="mx-auto rounded-2xl"
+          /></div>
           <p className="text-gray-500 font-medium">경기장 정보를 불러오는 중...</p>
         </div>
       </div>
