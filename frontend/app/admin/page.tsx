@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface Field {
   id: string;
   name: string;
   address: string;
   pricePerHour: number;
+  region: string;
   version: number;
 }
 
@@ -19,6 +21,7 @@ export default function AdminPage() {
     pricePerHour: '',
     startHour: 9,
     endHour: 22,
+    region: '서울',
     thumbnailUrl: '',
     imageUrlsInput: ''
   });
@@ -67,7 +70,7 @@ export default function AdminPage() {
 
       if (res.ok) {
         alert('구장이 성공적으로 등록되었습니다!');
-        setNewField({ name: '', address: '', pricePerHour: '', startHour: 9, endHour: 22, thumbnailUrl: '', imageUrlsInput: '' });
+        setNewField({ name: '', address: '', pricePerHour: '', startHour: 9, endHour: 22, region: '서울', thumbnailUrl: '', imageUrlsInput: '' });
         fetchFields();
       } else {
         const errorData = await res.json();
@@ -100,109 +103,125 @@ export default function AdminPage() {
     }
   };
 
-  const handleUpdate = async (id: string, currentName: string) => {
-    const newName = prompt('새로운 구장 이름을 입력하세요:', currentName);
-    if (!newName) return;
-    const res = await fetch(`${API_URL}/${id}`, {
-      method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ name: newName }),
-    });
+  // const handleUpdate = async (id: string, currentName: string) => {
+  //   const newName = prompt('새로운 구장 이름을 입력하세요:', currentName);
+  //   if (!newName) return;
+  //   const res = await fetch(`${API_URL}/${id}`, {
+  //     method: 'PATCH',
+  //     headers: getAuthHeaders(),
+  //     body: JSON.stringify({ name: newName }),
+  //   });
 
-    if (res.ok) {
-      alert('수정되었습니다.');
-      fetchFields();
-    } else {
-      alert('수정에 실패했습니다. 권한을 확인하세요.');
-    }
-  };
+  //   if (res.ok) {
+  //     alert('수정되었습니다.');
+  //     fetchFields();
+  //   } else {
+  //     alert('수정에 실패했습니다. 권한을 확인하세요.');
+  //   }
+  // };
 
-return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>풋살장 관리자 모드</h1>
+  return (
+    <main className="min-h-screen bg-[#f8f9fa] p-8 md:p-12">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+        
+        <section className="lg:w-1/3">
+          <div className="bg-white p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 sticky top-24">
+            <div className="mb-8 flex items-center gap-3">
+              <Image src="/postbar.png" width={32} height={32} alt="logo" />
+              <h2 className="text-2xl font-bold text-gray-800">새 구장 등록</h2>
+            </div>
 
-      <section style={{ marginBottom: '40px', padding: '20px', border: '1px solid #eee', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
-        <h2>➕ 새 구장 추가</h2>
-        <form onSubmit={handleCreate} style={{ display: 'grid', gap: '10px', maxWidth: '500px' }}>
-          <input 
-            type="text" placeholder="구장 이름" required
-            value={newField.name} onChange={e => setNewField({...newField, name: e.target.value})}
-            style={{ padding: '8px' }}
-          />
-          <input 
-            type="text" placeholder="주소" required
-            value={newField.address} onChange={e => setNewField({...newField, address: e.target.value})}
-            style={{ padding: '8px' }}
-          />
-          <input 
-            type="text" placeholder="시간당 가격" required
-            value={newField.pricePerHour} 
-            onChange={e => {
-              const value = e.target.value.replace(/[^0-9]/g, '');
-              setNewField({...newField, pricePerHour: value});
-            }}
-            style={{ padding: '8px' }}
-          />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>운영 시간:</span>
-            <input 
-              type="number" min="0" max="24"
-              value={newField.startHour} onChange={e => setNewField({...newField, startHour: Number(e.target.value)})}
-              style={{ width: '60px', padding: '5px' }}
-            />시 ~ 
-            <input 
-              type="number" min="0" max="24"
-              value={newField.endHour} onChange={e => setNewField({...newField, endHour: Number(e.target.value)})}
-              style={{ width: '60px', padding: '5px' }}
-            />시
+            <form onSubmit={handleCreate} className="space-y-4">
+              <input 
+                type="text" placeholder="구장 이름" required
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] outline-none text-sm"
+                value={newField.name} onChange={e => setNewField({...newField, name: e.target.value})}
+              />
+              <input 
+                type="text" placeholder="상세 주소" required
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] outline-none text-sm"
+                value={newField.address} onChange={e => setNewField({...newField, address: e.target.value})}
+              />
+              
+              <div className="grid grid-cols-2 gap-3">
+                <input 
+                  type="text" placeholder="시간당 가격" required
+                  className="p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] outline-none text-sm"
+                  value={newField.pricePerHour} 
+                  onChange={e => setNewField({...newField, pricePerHour: e.target.value.replace(/[^0-9]/g, '')})}
+                />
+                <select 
+                  value={newField.region}
+                  onChange={e => setNewField({...newField, region: e.target.value})}
+                  className="p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] outline-none text-sm text-gray-500 font-bold"
+                >
+                  {['서울', '경기/인천', '충청', '전라', '경상', '강원'].map(r => (
+                    <option key={r} value={r}>{r}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl text-xs text-gray-400 font-bold">
+                <span>운영:</span>
+                <input type="number" className="bg-transparent w-10 text-center text-[#4dabf7]" value={newField.startHour} onChange={e => setNewField({...newField, startHour: Number(e.target.value)})} />시 ~ 
+                <input type="number" className="bg-transparent w-10 text-center text-[#4dabf7]" value={newField.endHour} onChange={e => setNewField({...newField, endHour: Number(e.target.value)})} />시
+              </div>
+
+              <input 
+                type="text" placeholder="대표 이미지 URL" 
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] outline-none text-sm"
+                value={newField.thumbnailUrl} onChange={e => setNewField({...newField, thumbnailUrl: e.target.value})}
+              />
+
+              <textarea 
+                placeholder="추가 이미지 URL (쉼표로 구분)" 
+                className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] outline-none text-sm min-h-[100px]"
+                value={newField.imageUrlsInput} onChange={e => setNewField({...newField, imageUrlsInput: e.target.value})}
+              />
+
+              <button type="submit" className="w-full bg-[#4dabf7] text-white p-4 rounded-2xl font-bold hover:bg-[#339af0] transition-all shadow-lg shadow-blue-50 mt-2">
+                구장 등록하기
+              </button>
+            </form>
           </div>
-          <input 
-            type="text" placeholder="대표 이미지 URL (http://...)" 
-            value={newField.thumbnailUrl} 
-            onChange={e => setNewField({...newField, thumbnailUrl: e.target.value})}
-            style={{ padding: '8px' }}
-          />
+        </section>
 
-          <textarea 
-            placeholder="나머지 이미지 URL들 (여러 개일 경우 쉼표로 구분)" 
-            value={newField.imageUrlsInput} 
-            onChange={e => setNewField({...newField, imageUrlsInput: e.target.value})}
-            style={{ padding: '8px', minHeight: '80px' }}
-          />
-          <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-            구장 등록하기
-          </button>
-        </form>
-      </section>
-
-      <hr />
-
-      <h2 style={{ marginTop: '30px' }}>등록된 구장 목록</h2>
-      <table border={1} style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
-        <thead style={{ backgroundColor: '#f2f2f2' }}>
-          <tr>
-            <th style={{ padding: '10px' }}>구장명</th>
-            <th style={{ padding: '10px' }}>주소</th>
-            <th style={{ padding: '10px' }}>가격</th>
-            <th style={{ padding: '10px' }}>버전(락 확인용)</th>
-            <th style={{ padding: '10px' }}>관리</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fields.map((field) => (
-            <tr key={field.id}>
-              <td style={{ padding: '10px' }}>{field.name}</td>
-              <td style={{ padding: '10px' }}>{field.address}</td>
-              <td style={{ padding: '10px' }}>{field.pricePerHour.toLocaleString()}원</td>
-              <td style={{ padding: '10px' }}>{field.version}</td>
-              <td style={{ padding: '10px' }}>
-                <button onClick={() => handleUpdate(field.id, field.name)}>수정</button>
-                <button onClick={() => handleDelete(field.id)} style={{ color: 'red', marginLeft: '10px' }}>삭제</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        <section className="lg:w-2/3">
+          <h2 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+            <span className="w-2 h-8 bg-[#4dabf7] rounded-full"></span>
+            등록된 구장 목록
+          </h2>
+          
+          <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50/50 border-b border-gray-100">
+                  <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-wider">지역/구장명</th>
+                  <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-wider">가격</th>
+                  <th className="p-6 text-sm font-bold text-gray-400 uppercase tracking-wider">관리</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {fields.map((field) => (
+                  <tr key={field.id} className="hover:bg-gray-50/30 transition-colors">
+                    <td className="p-6">
+                      <span className="text-[10px] font-bold text-[#4dabf7] bg-blue-50 px-2 py-0.5 rounded-full mb-1 inline-block">{field.region}</span>
+                      <p className="font-bold text-gray-700">{field.name}</p>
+                      <p className="text-xs text-gray-400 mt-1">{field.address}</p>
+                    </td>
+                    <td className="p-6 font-bold text-gray-600">{field.pricePerHour.toLocaleString()}원</td>
+                    <td className="p-6">
+                      <div className="flex gap-3">
+                        <button onClick={() => handleDelete(field.id)} className="text-xs font-bold text-red-400 hover:text-red-600 underline">삭제</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 }
