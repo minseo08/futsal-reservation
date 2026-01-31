@@ -72,26 +72,34 @@ export default function FieldDetailClient({ id }: { id: string }) {
     <main className="min-h-screen bg-[#f8f9fa] p-8">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white p-10 rounded-[2rem] shadow-sm border border-gray-50 mb-8">
-          
           {(field.thumbnailUrl || (field.imageUrls && field.imageUrls.length > 0)) && (
-            <div className="grid grid-cols-4 gap-4 mb-10">
-              <div className="col-span-4 md:col-span-3">
-                <img 
-                  src={field.thumbnailUrl || field.imageUrls?.[0]} 
-                  className="w-full h-64 md:h-80 object-cover rounded-[2rem] border border-gray-100 shadow-sm"
-                  alt="구장 대표 이미지"
-                />
-              </div>
-              <div className="hidden md:flex flex-col gap-4 overflow-y-auto max-h-80 pr-2">
+            <div className="mb-10">
+              <img 
+                src={field.thumbnailUrl || field.imageUrls?.[0]} 
+                className="w-full h-80 object-cover rounded-[2.5rem] mb-4 border border-gray-100"
+                alt="구장 메인 이미지"
+              />
+              
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                {field.thumbnailUrl && (
+                  <img 
+                    src={field.thumbnailUrl} 
+                    className="w-32 h-24 flex-shrink-0 object-cover rounded-2xl border border-gray-100"
+                    alt="썸네일"
+                  />
+                )}
                 {field.imageUrls?.map((url: string, index: number) => (
                   <img 
                     key={index}
                     src={url}
-                    className="w-full h-24 object-cover rounded-2xl border border-gray-50 hover:border-[#4dabf7] transition-all cursor-pointer"
+                    className="w-32 h-24 flex-shrink-0 object-cover rounded-2xl border border-gray-100 hover:border-[#4dabf7] transition-all"
                     alt={`상세 이미지 ${index + 1}`}
                   />
                 ))}
               </div>
+              <p className="text-[10px] text-gray-300 mt-1 text-center italic">
+                ← 옆으로 밀어서 더 많은 사진을 확인하세요 →
+              </p>
             </div>
           )}
 

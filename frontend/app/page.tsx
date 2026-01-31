@@ -86,37 +86,38 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {fields.map((field) => (
             <div 
-              key={field.id} 
-              className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-50 hover:shadow-md transition-shadow"
-            >
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold text-[#495057] mb-1">{field.name}</h2>
-                  <div className="flex items-center gap-3">
-                    <p className="text-[#868e96] text-sm leading-relaxed max-w-[150px]">
+                key={field.id} 
+                className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-50 hover:shadow-md transition-shadow relative overflow-hidden"
+              >
+                <div className="flex justify-between gap-4 mb-8">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h2 className="text-xl font-bold text-[#495057]">{field.name}</h2>
+                      <span className="bg-[#e7f5ff] text-[#1971c2] text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        운영 중
+                      </span>
+                    </div>
+                    <p className="text-[#868e96] text-sm leading-relaxed max-w-[180px]">
                       {field.address}
                     </p>
-                    {field.thumbnailUrl && (
-                      <img 
-                        src={field.thumbnailUrl} 
-                        alt={field.name} 
-                        className="w-12 h-12 rounded-2xl object-cover border border-gray-100 shadow-sm"
-                      />
-                    )}
                   </div>
+                  
+                  {field.thumbnailUrl && (
+                    <img 
+                      src={field.thumbnailUrl} 
+                      alt={field.name} 
+                      className="w-24 h-24 rounded-3xl object-cover border border-gray-50 shadow-sm flex-shrink-0"
+                    />
+                  )}
                 </div>
-                <span className="bg-[#e7f5ff] text-[#1971c2] text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                  운영 중
-                </span>
-              </div>
-              
-              <div className="flex items-center justify-between pt-6 border-t border-[#f1f3f5]">
-                <div>
-                  <span className="text-xs text-gray-400 block mb-1 font-medium">시간당 이용료</span>
-                  <span className="text-lg font-bold text-[#4dabf7]">
-                    {field.pricePerHour.toLocaleString()}원
-                  </span>
-                </div>
+                
+                <div className="flex items-center justify-between pt-6 border-t border-[#f1f3f5]">
+                  <div>
+                    <span className="text-xs text-gray-400 block mb-1 font-medium">시간당 이용료</span>
+                    <span className="text-lg font-bold text-[#4dabf7]">
+                      {field.pricePerHour.toLocaleString()}원
+                    </span>
+                  </div>
                 
                 <Link href={`/fields?id=${field.id}`}>
                   <button className="bg-[#4dabf7] text-white px-6 py-3 rounded-2xl font-bold hover:bg-[#339af0] transition-all transform active:scale-95">
