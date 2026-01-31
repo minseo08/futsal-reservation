@@ -23,9 +23,11 @@ export class FieldsService {
     address: string, 
     pricePerHour: number,
     startHour: number,
-    endHour: number 
+    endHour: number,
+    thumbnailUrl?: string,
+    imageUrls?: string[]
   ): Promise<Field> {
-    const newField = this.fieldsRepository.create({ name, address, pricePerHour });
+    const newField = this.fieldsRepository.create({ name, address, pricePerHour, thumbnailUrl, imageUrls });
     const savedField = await this.fieldsRepository.save(newField);
 
     const slots: TimeSlot[] = [];

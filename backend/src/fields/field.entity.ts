@@ -24,6 +24,12 @@ export class Field {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column({ nullable: true })
+  thumbnailUrl: string;
+
+  @Column("simple-array", { nullable: true })
+  imageUrls: string[];
+
   @OneToMany(() => TimeSlot, (timeSlot) => timeSlot.field, {
     cascade: true,
   })

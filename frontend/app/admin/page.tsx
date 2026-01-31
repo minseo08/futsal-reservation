@@ -18,7 +18,9 @@ export default function AdminPage() {
     address: '',
     pricePerHour: '',
     startHour: 9,
-    endHour: 22
+    endHour: 22,
+    thumbnailUrl: '',
+    imageUrlsInput: ''
   });
 
   const API_URL = 'http://futsal-backend-alb-2038761267.ap-northeast-2.elb.amazonaws.com/fields';
@@ -47,20 +49,25 @@ export default function AdminPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    const imageUrls = newField.imageUrlsInput
+      .split(',')
+      .map(url => url.trim())
+      .filter(url => url !== '');
+    
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({
           ...newField,
-          pricePerHour: Number(newField.pricePerHour)
+          pricePerHour: Number(newField.pricePerHour),
+          imageUrls: imageUrls
         }),
       });
 
       if (res.ok) {
         alert('구장이 성공적으로 등록되었습니다!');
-        setNewField({ name: '', address: '', pricePerHour: '', startHour: 9, endHour: 22 });
+        setNewField({ name: '', address: '', pricePerHour: '', startHour: 9, endHour: 22, thumbnailUrl: '', imageUrlsInput: '' });
         fetchFields();
       } else {
         const errorData = await res.json();
@@ -77,7 +84,7 @@ export default function AdminPage() {
     try {
       const res = await fetch(`${API_URL}/${id}`, { 
         method: 'DELETE',
-        headers: getAuthHeaders() // 삭제 요청에도 토큰 포함
+        headers: getAuthHeaders()
       });
 
       if (res.ok) {
@@ -149,6 +156,19 @@ return (
               style={{ width: '60px', padding: '5px' }}
             />시
           </div>
+          <input 
+            type="text" placeholder="대표 이미지 URL (http://...)" 
+            value={newField.thumbnailUrl} 
+            onChange={e => setNewField({...newField, thumbnailUrl: e.target.value})}
+            style={{ padding: '8px' }}
+          />
+
+          <textarea 
+            placeholder="나머지 이미지 URL들 (여러 개일 경우 쉼표로 구분)" 
+            value={newField.imageUrlsInput} 
+            onChange={e => setNewField({...newField, imageUrlsInput: e.target.value})}
+            style={{ padding: '8px', minHeight: '80px' }}
+          />
           <button type="submit" style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
             구장 등록하기
           </button>
