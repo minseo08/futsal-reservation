@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function Navbar() {
   const router = useRouter();
@@ -34,7 +35,13 @@ export default function Navbar() {
         <Link href="/" className="text-xl font-bold text-[#4dabf7]">
           FutsalHub
         </Link>
-
+        <div className="mb-4"><Image 
+          src="/postbar.png"
+          alt="Futsal Logo"
+          width={64} 
+          height={64}
+          className="mx-auto rounded-2xl"
+        /></div>
         <div className="flex items-center gap-6">
           <Link href="/board" className="text-gray-600 hover:text-[#4dabf7] font-medium">게시판</Link>
           <Link href="/my-reservations" className="text-gray-600 hover:text-[#4dabf7] font-medium">내 예약</Link>

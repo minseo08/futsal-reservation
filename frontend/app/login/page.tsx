@@ -74,6 +74,9 @@ export default function LoginPage() {
     <main className="min-h-screen flex flex-col md:flex-row bg-[#f8f9fa]">
       <div className="md:w-1/2 flex flex-col justify-center px-12 lg:px-24 bg-gradient-to-br from-[#4dabf7] to-[#339af0] text-white py-20 md:py-0">
         <div className="mb-6 animate-fade-in">
+          <h1 className="text-5xl font-extrabold tracking-tight mb-4">
+            Futsal Hub
+          </h1>
             <div className="mb-4"><Image 
               src="/postbar.png"
               alt="Futsal Logo"
@@ -81,9 +84,6 @@ export default function LoginPage() {
               height={64}
               className="mx-auto rounded-2xl"
             /></div>
-          <h1 className="text-5xl font-extrabold tracking-tight mb-4">
-            Futsal Hub
-          </h1>
           <p className="text-xl text-blue-50 font-medium leading-relaxed max-w-md">
             당신의 다음 경기를 위한 가장 완벽한 예약 파트너. <br />
             지금 바로 필드를 확인하세요.
@@ -108,7 +108,7 @@ export default function LoginPage() {
               <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Email</label>
               <input 
                 type="email" 
-                placeholder="example@futsal.com" 
+                placeholder="이메일" 
                 className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
@@ -119,7 +119,7 @@ export default function LoginPage() {
               <label className="block text-xs font-bold text-gray-400 mb-2 ml-1 uppercase tracking-wider">Password</label>
               <input 
                 type="password" 
-                placeholder="••••••••" 
+                placeholder="비밀번호" 
                 className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#4dabf7] transition-all outline-none text-gray-600" 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
@@ -127,7 +127,7 @@ export default function LoginPage() {
             </div>
 
             <button className="w-full bg-[#4dabf7] text-white p-4 rounded-2xl font-bold text-lg hover:bg-[#339af0] transition-all shadow-lg shadow-blue-100 mt-4 active:scale-[0.98]">
-              경기로 입장하기
+              로그인
             </button>
           </form>
 
