@@ -3,17 +3,7 @@
 > **"풋살인들을 위한 스마트한 구장 예약 플랫폼"**
 
 FutsalHub는 풋살 경기장 예약의 번거로움을 해결하고, 관리자와 사용자 모두에게 최적화된 예약 경험을 제공하는 풀스택 웹 애플리케이션
-
-
-<p align="center">
-  <img src="./images/webscreen1.png" width="25%">
-</p>
-<p align="center">
-  <img src="./images/webscreen2.png" width="50%">
-</p>
-<p align="center">
-  <img src="./images/webscreen3.png" width="50%">
-</p>
+* https://futsalhub.site/
 ---
 
 ## 주요 기능 (Key Features)
@@ -44,6 +34,16 @@ FutsalHub는 풋살 경기장 예약의 번거로움을 해결하고, 관리자�
 - **CI/CD**: GitHub Actions
 
 ---
+<p align="center">
+  <img src="./images/webscreen1.png" width="25%">
+</p>
+<p align="center">
+  <img src="./images/webscreen2.png" width="50%">
+</p>
+<p align="center">
+  <img src="./images/webscreen3.png" width="50%">
+</p>
+
 
 ## 시스템 아키텍처 (Architecture)
 
